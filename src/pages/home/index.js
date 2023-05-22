@@ -1,17 +1,8 @@
 import React from 'react';
 import {useState} from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  Text,
-  Button,
-  ActivityIndicator,
-  FlatList,
-} from 'react-native';
+import {StyleSheet, View, Text, Button, FlatList} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import axios from 'axios';
-import {List, Divider} from 'react-native-paper';
 
 const HomePage = ({route, navigation}) => {
   const {buttontext} = route.params;
@@ -51,25 +42,28 @@ const HomePage = ({route, navigation}) => {
       />
       <Button title="Get Data" color="purple" onPress={() => apiCall()} />
       <FlatList
+        style={{margin: 10}}
         data={data}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(_item, index) => index.toString()}
         renderItem={item => {
           return (
-            <List.Item
-              style={{padding: 3}}
-              title={item.title}
-              description={item.completed}
-            />
+            <View style={{padding: 3}}>
+              <Text style={styles.text}>Title: {item.item.title}</Text>
+              <Text style={styles.subTitle}>
+                Completed: {item.item.completed.toString()}
+              </Text>
+            </View>
           );
         }}
         ItemSeparatorComponent={() => (
-          // <View
-          //   style={{
-          //     borderBottomColor: 'grey',
-          //     borderBottomWidth: StyleSheet.hairlineWidth,
-          //   }}
-          // />
-          <Divider />
+          <View
+            style={{
+              borderBottomColor: 'grey',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              marginStart: '5%',
+              marginEnd: '5%',
+            }}
+          />
         )}
       />
     </View>
@@ -83,7 +77,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {color: '#000000', fontSize: 16.0, fontWeight: 'bold'},
+  text: {color: '#000000', fontSize: 16.0, fontWeight: 'normal'},
+  subTitle: {color: '#000000', fontSize: 14.0, fontWeight: 'normal'},
   loading: {
     position: 'absolute',
     left: 0,
