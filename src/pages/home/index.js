@@ -3,12 +3,16 @@ import {useState} from 'react';
 import {StyleSheet, View, Text, Button, FlatList} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import axios from 'axios';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const HomePage = ({route, navigation}) => {
   const {buttontext} = route.params;
 
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
+
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+  const [dropDownValue, setDropDownValue] = useState(null);
 
   const url = 'https://jsonplaceholder.typicode.com/todos/';
 
@@ -17,8 +21,7 @@ const HomePage = ({route, navigation}) => {
     setIsLoading(true);
     try {
       const response = await axios.get(url);
-      setData(response.data);
-      console.log(data[0]);
+      setData(response.data.slice(0, 6));
     } catch (error) {
       console.log(error);
     } finally {
@@ -65,6 +68,14 @@ const HomePage = ({route, navigation}) => {
             }}
           />
         )}
+      />
+      <DropDownPicker
+        schema={{label: 'title', value: 'id'}}
+        open={dropDownOpen}
+        items={data}
+        value={dropDownValue}
+        setOpen={setDropDownOpen}
+        setValue={setDropDownValue}
       />
     </View>
   );
