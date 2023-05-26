@@ -1,4 +1,4 @@
-package com.testproject;
+package com.testproject.packages;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -23,7 +23,7 @@ public class GoCheck extends ReactContextBaseJavaModule {
     @NonNull
     @Override
     public String getName() {
-        return "GoDeviceCheck";
+        return "GoCheck";
     }
 
     @ReactMethod

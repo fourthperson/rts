@@ -1,10 +1,16 @@
-package com.testproject;
+package com.testproject.packages;
+
+import android.app.ActivityManager;
+import android.content.Context;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.uimanager.ViewManager;
 
 import java.util.ArrayList;

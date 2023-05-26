@@ -1,13 +1,25 @@
 import React from 'react';
-import {StyleSheet, StatusBar, View, Text, Button} from 'react-native';
+import {
+  StyleSheet,
+  StatusBar,
+  View,
+  Text,
+  Button,
+  NativeModules,
+  Platform,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const SplashPage = ({navigation}) => {
   const params = {buttontext: 'Anything'};
 
-  setTimeout(() => {
-    navigation.navigate('Home', params);
-  }, 1500);
+  // setTimeout(() => {
+  //   navigation.navigate('Home', params);
+  // }, 1500);
+
+  var goDeviceCheck = NativeModules.GoCheck;
+  let isGoDevice = goDeviceCheck.isAndroidGoDevice();
+  console.log(isGoDevice);
 
   return (
     <View style={styles.container}>
@@ -20,6 +32,16 @@ const SplashPage = ({navigation}) => {
             color="orange"
             onPress={() => {
               navigation.navigate('Home', params);
+            }}
+          />
+          <Button
+            title="Check Go"
+            color="blue"
+            onPress={async () => {
+              if (Platform.OS === 'android') {
+                let isGo = await goDeviceCheck.isAndroidGoDevice();
+                console.log(isGo);
+              }
             }}
           />
         </View>
