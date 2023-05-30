@@ -8,6 +8,7 @@ import {
   Button,
   NativeModules,
   Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
@@ -21,45 +22,72 @@ import {
 const SplashPage = ({navigation}) => {
   const params = {buttontext: 'Anything'};
 
-  const isGoDevice = NativeModules.GoCheck.isAndroidGoDevice();
+  const [notificationsAllowed, setNotificationsAllowed] = useState(false);
 
-  // setTimeout(() => {
-  //   navigation.navigate('Home', params);
-  // }, 1500);
-
-  const bubble = () => {
-    initialize();
-    showFloatingBubble();
-  };
-
-  const showBubble = async () => {
-    let hasPermission = await checkPermission();
-    if (hasPermission) {
-      bubble();
-    } else {
-      requestPermission()
-        .then(() => bubble())
-        .catch(error => console.log('Permission denied: ' + error));
+  const requestNotificationPermission = async () => {
+    const granted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
+    setNotificationsAllowed(granted);
+    if (!granted) {
+      const allowed = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Cool Photo App Notification Permission',
+          message:
+            'Cool Photo App needs access to be able to show notifications.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      setNotificationsAllowed(
+        allowed === PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
     }
   };
 
   useEffect(() => {
-    async function initBubble() {
-      let hasPermission = await checkPermission();
-      console.log('Has overlay permissions: ' + hasPermission);
-      if (!hasPermission) {
-        requestPermission().then(() => {
-          initialize();
-          showFloatingBubble();
-        });
-      } else {
-        // has permission
-        initialize();
-        showFloatingBubble();
-      }
-    }
-    initBubble();
-  });
+    requestNotificationPermission();
+  }, [notificationsAllowed]);
+
+  // const bubble = async () => {
+  //   initialize().then(() => {
+  //     showFloatingBubble();
+  //   });
+  // };
+
+  // const showBubble = async () => {
+  //   let hasPermission = await checkPermission();
+  //   if (hasPermission) {
+  //     bubble();
+  //   } else {
+  //     requestPermission()
+  //       .then(() => bubble())
+  //       .catch(error => console.log('Permission denied: ' + error));
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   async function initBubble() {
+  //     let hasPermission = await checkPermission();
+  //     console.log('Has overlay permissions: ' + hasPermission);
+  //     if (!hasPermission) {
+  //       requestPermission().then(() => {
+  //         initialize().then(() => {
+  //           showFloatingBubble();
+  //         });
+  //         // showFloatingBubble();
+  //       });
+  //     } else {
+  //       // has permission
+  //       initialize().then(() => {
+  //         showFloatingBubble();
+  //       });
+  //     }
+  //   }
+  //   initBubble();
+  // });
 
   return (
     <View style={styles.container}>
@@ -88,9 +116,19 @@ const SplashPage = ({navigation}) => {
             title="Show Bubble"
             color="green"
             onPress={async () => {
-              if (Platform.OS === 'android' && !isGoDevice) {
+              if (
+                Platform.OS === 'android' &&
+                !NativeModules.GoCheck.isAndroidGoDevice()
+              ) {
                 showBubble();
               }
+            }}
+          />
+          <Button
+            title="Map Screen"
+            color="red"
+            onPress={() => {
+              navigation.navigate('Map');
             }}
           />
         </View>
