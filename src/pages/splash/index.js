@@ -1,4 +1,5 @@
 import React from 'react';
+import {useState, useEffect} from 'react';
 import {
   StyleSheet,
   StatusBar,
@@ -9,17 +10,56 @@ import {
   Platform,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {
+  showFloatingBubble,
+  hideFloatingBubble,
+  requestPermission,
+  checkPermission,
+  initialize,
+} from 'react-native-floating-bubble';
 
 const SplashPage = ({navigation}) => {
   const params = {buttontext: 'Anything'};
+
+  const isGoDevice = NativeModules.GoCheck.isAndroidGoDevice();
 
   // setTimeout(() => {
   //   navigation.navigate('Home', params);
   // }, 1500);
 
-  var goDeviceCheck = NativeModules.GoCheck;
-  let isGoDevice = goDeviceCheck.isAndroidGoDevice();
-  console.log(isGoDevice);
+  const bubble = () => {
+    initialize();
+    showFloatingBubble();
+  };
+
+  const showBubble = async () => {
+    let hasPermission = await checkPermission();
+    if (hasPermission) {
+      bubble();
+    } else {
+      requestPermission()
+        .then(() => bubble())
+        .catch(error => console.log('Permission denied: ' + error));
+    }
+  };
+
+  useEffect(() => {
+    async function initBubble() {
+      let hasPermission = await checkPermission();
+      console.log('Has overlay permissions: ' + hasPermission);
+      if (!hasPermission) {
+        requestPermission().then(() => {
+          initialize();
+          showFloatingBubble();
+        });
+      } else {
+        // has permission
+        initialize();
+        showFloatingBubble();
+      }
+    }
+    initBubble();
+  });
 
   return (
     <View style={styles.container}>
@@ -39,8 +79,17 @@ const SplashPage = ({navigation}) => {
             color="blue"
             onPress={async () => {
               if (Platform.OS === 'android') {
-                let isGo = await goDeviceCheck.isAndroidGoDevice();
+                let isGo = NativeModules.GoCheck.isAndroidGoDevice();
                 console.log(isGo);
+              }
+            }}
+          />
+          <Button
+            title="Show Bubble"
+            color="green"
+            onPress={async () => {
+              if (Platform.OS === 'android' && !isGoDevice) {
+                showBubble();
               }
             }}
           />

@@ -6,6 +6,7 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -26,7 +27,7 @@ public class GoCheck extends ReactContextBaseJavaModule {
         return "GoCheck";
     }
 
-    @ReactMethod
+    @ReactMethod(isBlockingSynchronousMethod = true)
     public boolean isAndroidGoDevice() {
         return Build.VERSION.SDK_INT > Build.VERSION_CODES.Q && manager(context).isLowRamDevice();
     }

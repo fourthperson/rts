@@ -9,6 +9,7 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import com.testproject.packages.GoCheckPackager;
+import com.reactlibrary.RNFloatingBubblePackage;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
             packages.add(new GoCheckPackager());
+//            packages.add(new RNFloatingBubblePackage());
           return packages;
         }
 
