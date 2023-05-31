@@ -6,8 +6,10 @@
  */
 
 import React from 'react';
+import {DeviceEventEmitter} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {reopenApp} from 'react-native-floating-bubble';
 
 import SplashPage from './src/pages/splash';
 import HomePage from './src/pages/home';
@@ -28,5 +30,14 @@ const App = () => {
     </NavigationContainer>
   );
 };
+
+DeviceEventEmitter.addListener('floating-bubble-press', e => {
+  // What to do when user press the bubble
+  reopenApp();
+});
+DeviceEventEmitter.addListener('floating-bubble-remove', e => {
+  // What to do when user removes the bubble
+  console.log('Remove Bubble');
+});
 
 export default App;

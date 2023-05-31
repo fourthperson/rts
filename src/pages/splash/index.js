@@ -18,76 +18,59 @@ import {
   checkPermission,
   initialize,
 } from 'react-native-floating-bubble';
+import {
+  checkNotifications,
+  requestNotifications,
+} from 'react-native-permissions';
 
 const SplashPage = ({navigation}) => {
   const params = {buttontext: 'Anything'};
 
   const [notificationsAllowed, setNotificationsAllowed] = useState(false);
+  const [overlayAllowed, setOverlayAllowed] = useState(undefined);
 
-  const requestNotificationPermission = async () => {
-    const granted = await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-    );
-    setNotificationsAllowed(granted);
-    if (!granted) {
-      const allowed = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Cool Photo App Notification Permission',
-          message:
-            'Cool Photo App needs access to be able to show notifications.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      setNotificationsAllowed(
-        allowed === PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      );
+  const notificationPermissions = async () => {
+    checkNotifications().then((status, settings) => {
+      const granted = status.status === 'granted';
+      if (!granted) {
+        requestNotifications().then((status1, settings1) => {
+          setNotificationsAllowed(status1.status === 'granted');
+        });
+      }
+    });
+  };
+
+  const overlayPermission = async () => {
+    let hasPermission = await checkPermission();
+    if (hasPermission) {
+      bubble();
+    } else {
+      requestPermission()
+        .then(x => {
+          setOverlayAllowed(true);
+          bubble();
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
   };
 
   useEffect(() => {
-    requestNotificationPermission();
+    notificationPermissions();
   }, [notificationsAllowed]);
 
-  // const bubble = async () => {
-  //   initialize().then(() => {
-  //     showFloatingBubble();
-  //   });
-  // };
+  useEffect(() => {
+    if (!overlayAllowed) {
+      overlayPermission();
+    }
+  }, [overlayAllowed]);
 
-  // const showBubble = async () => {
-  //   let hasPermission = await checkPermission();
-  //   if (hasPermission) {
-  //     bubble();
-  //   } else {
-  //     requestPermission()
-  //       .then(() => bubble())
-  //       .catch(error => console.log('Permission denied: ' + error));
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   async function initBubble() {
-  //     let hasPermission = await checkPermission();
-  //     console.log('Has overlay permissions: ' + hasPermission);
-  //     if (!hasPermission) {
-  //       requestPermission().then(() => {
-  //         initialize().then(() => {
-  //           showFloatingBubble();
-  //         });
-  //         // showFloatingBubble();
-  //       });
-  //     } else {
-  //       // has permission
-  //       initialize().then(() => {
-  //         showFloatingBubble();
-  //       });
-  //     }
-  //   }
-  //   initBubble();
-  // });
+  const bubble = async () => {
+    initialize().then(x => {
+      showFloatingBubble();
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -120,7 +103,7 @@ const SplashPage = ({navigation}) => {
                 Platform.OS === 'android' &&
                 !NativeModules.GoCheck.isAndroidGoDevice()
               ) {
-                showBubble();
+                bubble();
               }
             }}
           />

@@ -3,10 +3,11 @@ import {PermissionsAndroid, StatusBar, StyleSheet, View} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import VIForegroundService from '@voximplant/react-native-foreground-service';
 // import BackgroundGeolocation from 'react-native-background-geolocation';
+import Geolocation from 'react-native-geolocation-service';
 
 const MapPage = ({route, navigation}) => {
   const [permissionGranted, setPermissionGranted] = useState(null);
-  const [location, setLocation] = useState();
+  const [location, setLocation] = useState(null);
 
   const requestLocationPermission = async () => {
     try {
@@ -39,6 +40,17 @@ const MapPage = ({route, navigation}) => {
         //     }
         //   },
         // );
+
+        Geolocation.watchPosition(
+          position => {
+            console.log(position);
+            setLocation(location);
+          },
+          error => {
+            console.log(error.code, error.message);
+          },
+          {enableHighAccuracy: true, distanceFilter: 50, },
+        );
       } else {
         console.log('Location permission denied');
       }

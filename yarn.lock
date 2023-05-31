@@ -1987,6 +1987,11 @@ acorn@^8.5.0, acorn@^8.8.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.8.2.tgz#1b2f25db02af965399b9776b0c2c391276d37c4a"
   integrity sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==
 
+add@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/add/-/add-2.0.6.tgz#248f0a9f6e5a528ef2295dbeec30532130ae2235"
+  integrity sha512-j5QzrmsokwWWp6kUcJQySpbG+xfOBqqKnup3OIk1pz+kB/80SLorZ9V8zHFLO92Lcd+hbvq8bT+zOGoPkmBV0Q==
+
 ajv@^6.10.0, ajv@^6.12.4:
   version "6.12.6"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.6.tgz#baf5a62e802b07d977034586f8c3baf5adf26df4"
@@ -5696,6 +5701,13 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
+pkg-dir@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-5.0.0.tgz#a02d6aebe6ba133a928f74aec20bafdfe6b8e760"
+  integrity sha512-NPE8TDbzl/3YQYY7CSS228s3g2ollTFnc+Qi3tqmqJp9Vg2ovUpixcJEo2HJScN2Ez+kEaal6y70c0ehqJBJeA==
+  dependencies:
+    find-up "^5.0.0"
+
 posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
@@ -5837,18 +5849,6 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-native-background-fetch@^4.1.0, react-native-background-fetch@~4.1.10:
-  version "4.1.10"
-  resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.1.10.tgz#12c7e85140af67fb05edb7cd9960e4f09a457797"
-  integrity sha512-Ug54vTctZuD/c06ZLk/VyvFdhw/hCVVOHYR5heyMqc6FlT/m9fVhFWyl4uH3JmPCzmWDVR3fO28CzrGpKOrusw==
-
-react-native-background-geolocation@^4.12.1:
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/react-native-background-geolocation/-/react-native-background-geolocation-4.12.1.tgz#182ac76ee2d44008aee3d9d74cca4234104adc84"
-  integrity sha512-0ZjFQdoTClCOSbhEDrq/7xpZf9Yt6xi1ryWBOPkvXo/sO7P0a8+ZYRejXJFm4vy8QK5r5q4BzQRuGM51ycHcsA==
-  dependencies:
-    react-native-background-fetch "~4.1.10"
-
 react-native-codegen@^0.71.5:
   version "0.71.5"
   resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.71.5.tgz#454a42a891cd4ca5fc436440d301044dc1349c14"
@@ -5869,6 +5869,11 @@ react-native-floating-bubble@^1.0.12:
   resolved "https://registry.yarnpkg.com/react-native-floating-bubble/-/react-native-floating-bubble-1.0.12.tgz#e1506056371dd064f6d433b2ad025125bbf7aef0"
   integrity sha512-TnWV85dYCUFlzHNy+l7YucRQcIu9C4XMMUOkPkFUjomuFWilAo3rk0Mpc4p6MdhT5Ycjx0rBPjv5YYO/IAgRXQ==
 
+react-native-geolocation-service@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-geolocation-service/-/react-native-geolocation-service-5.3.1.tgz#4ce1017789da6fdfcf7576eb6f59435622af4289"
+  integrity sha512-LTXPtPNmrdhx+yeWG47sAaCgQc3nG1z+HLLHlhK/5YfOgfLcAb9HAkhREPjQKPZOUx8pKZMIpdGFUGfJYtimXQ==
+
 react-native-gradle-plugin@^0.71.18:
   version "0.71.18"
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.18.tgz#20ef199bc85be32e45bb6cc069ec2e7dcb1a74a6"
@@ -5885,6 +5890,14 @@ react-native-maps@^1.7.1:
   integrity sha512-CHVLzL+Q2jiUGgbt4/vosxVI1SukWyaLGjD62VLgR/wZpnH4Umi9ql1bmKDPWcfj2C1QZwMU0Yc7rXTbvZUIiw==
   dependencies:
     "@types/geojson" "^7946.0.10"
+
+react-native-permissions@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-3.8.0.tgz#7c1f75ae126c7d0b863eec9d2f5cd93ff8ad8310"
+  integrity sha512-BfZ7ksgdpGchHZH8M/kxCGZbWeACANbnPmb3hNjVOMDQusc4PWlPpobX3eBqYMSKbpi7bMECeV9BVU4QuwAf9A==
+  dependencies:
+    picocolors "^1.0.0"
+    pkg-dir "^5.0.0"
 
 react-native-safe-area-context@^4.5.3:
   version "4.5.3"
@@ -7159,6 +7172,11 @@ yargs@^17.3.1, yargs@^17.5.1:
     string-width "^4.2.3"
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
+
+yarn@^1.22.19:
+  version "1.22.19"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.22.19.tgz#4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
+  integrity sha512-/0V5q0WbslqnwP91tirOvldvYISzaqhClxzyUKXYxs07yUILIs5jx/k6CFe8bvKSkds5w+eiOqta39Wk3WxdcQ==
 
 yocto-queue@^0.1.0:
   version "0.1.0"
