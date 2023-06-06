@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import {
   StyleSheet,
   StatusBar,
@@ -8,9 +8,9 @@ import {
   Button,
   NativeModules,
   Platform,
-  PermissionsAndroid,
+  Animated,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   showFloatingBubble,
   hideFloatingBubble,
@@ -22,12 +22,16 @@ import {
   checkNotifications,
   requestNotifications,
 } from 'react-native-permissions';
+import CompassHeading from 'react-native-compass-heading';
+import SVGImg from '../../../assets/person.svg';
 
-const SplashPage = ({navigation}) => {
-  const params = {buttontext: 'Anything'};
+const SplashPage = ({ navigation }) => {
+  const params = { buttontext: 'Anything' };
 
   const [notificationsAllowed, setNotificationsAllowed] = useState(false);
   const [overlayAllowed, setOverlayAllowed] = useState(undefined);
+  const [rotateAnimation, setRotateAnimation] = useState(new Animated.Value(0));
+  const [compassHeading, setCompassHeading] = useState(0);
 
   const notificationPermissions = async () => {
     checkNotifications().then((status, settings) => {
@@ -60,24 +64,45 @@ const SplashPage = ({navigation}) => {
     notificationPermissions();
   }, [notificationsAllowed]);
 
-  useEffect(() => {
-    if (!overlayAllowed) {
-      overlayPermission();
-    }
-  }, [overlayAllowed]);
+  // useEffect(() => {
+  //   if (!overlayAllowed) {
+  //     overlayPermission();
+  //   }
+  // }, [overlayAllowed]);
 
-  const bubble = async () => {
+  // useEffect(() => {
+  //   CompassHeading.hasCompass().then(hasCompass => {
+  //     if (hasCompass) {
+  //       CompassHeading.start(10, ({ heading, accuracy }) => {
+  //         console.log(`Heading: ${heading}, Accuracy: ${accuracy}`);
+  //         setCompassHeading(Number(heading));
+  //       });
+  //     }
+  //   });
+  // }, []);
+
+  async function bubble() {
     initialize().then(x => {
       showFloatingBubble();
     });
-  };
+  }
+
+
+  function handleRotation() {
+    Animated.timing(rotateAnimation, {
+      toValue: 1,
+      duration: 500,
+    }).start(() => {
+      rotateAnimation.setValue(0);
+    });
+  }
 
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="black" />
       <SafeAreaView>
         <View>
-          <Text style={styles.text}>Splash Screen</Text>
+          <Text style={styles.titleText}>Splash Screen</Text>
           <Button
             title="Go Home"
             color="orange"
@@ -114,7 +139,15 @@ const SplashPage = ({navigation}) => {
               navigation.navigate('Map');
             }}
           />
+          <View style={styles.svgContainer}>
+            <Animated.View>
+              <SVGImg width={100} height={100} style={{
+                transform: [{ rotate: `${compassHeading}deg` }],
+              }} />
+            </Animated.View>
+          </View>
         </View>
+        <Text style={styles.bearingText}>{compassHeading.toString()}</Text>
       </SafeAreaView>
     </View>
   );
@@ -127,7 +160,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {color: '#000000', fontSize: 16.0, fontWeight: 'bold'},
+  titleText: { color: '#000000', fontSize: 16.0, fontWeight: 'bold' },
+  svgContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '15%',
+  },
+  bearingText: { textAlign: 'center', fontWeight: 'bold', color: 'black' },
 });
 
 export default SplashPage;
